@@ -13,27 +13,31 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <style>
-                body {
-                    margin-left: 10px;
+                #about{
+                    width:100%;
+                    position: fixed;
+                    height:100%;
                 }
+                /*body {
+                    margin-left: 10px;
+                }*/
         
                 #chatInput {
-                    position: fixed;
-                    bottom: 3%;
-                    width: 100%
+                    
+                    background-color:rgba(0, 0, 0, 0.100);
+                    position:fixed;
+                    margin-left:25%;
+                    bottom: 10%;
+                    
+                    
+                    
                 }
         
-                #joinPanel span {
-                    margin-left: 12px;
-                    margin-right: 12px;
-                }
-        
-                #joinPanel input {
-                    margin-left: 12px;
-                }
+                
         
                 /* 화면 하단 고정 */
-                #userInput {
+                
+               /* #userInput {
                     width: 80%;
                     margin-left: 1%;
                     margin-right: 1%;
@@ -41,15 +45,16 @@
         
                 #sendButton {
                     width: 15%;
-                }
+                }*/
         
                 #messages {
-                    padding-top: 10px;
+                    padding-top: 100px;
                 }
         
                 #messages li {
                     list-style-type: none;
                 }
+
             </style>
 		<script language="JavaScript" type="text/javascript">
 			var setCookie = function(name, value, exp) {
@@ -90,13 +95,15 @@
                     });
                 
                     function appendMessage(msg) {
-                        $('#messages').append($('<li>').text(msg));
+                        $('iframe').contents().find('#messages').append($('<li>').text(msg));
+                        $('iframe').scrollHeight = $('iframe').get(0).contentDocument.height;
                     }
                 
                     socket.on('joinRoomResult', function (data) {
                         console.log('join room result :', data);
                         if ( data.room ) {
-                            appendMessage(data.user + ' 님이 채팅방에 입장했습니다');
+                            
+                            setTimeout(function() { appendMessage(data.user + ' 님이 채팅방에 입장했습니다'); }, 100);
                             room = data.room;
                         }
                         else {
@@ -129,7 +136,8 @@
                     socket.emit("joinRoom", {user: user, room: room});
                 
                     
-			});
+            });
+
 			</script>
 	</head>
 	<body class="is-preload">
@@ -179,18 +187,19 @@
 		<!-- Main -->
 			<div id="main">
 				<!-- Intro -->
-                <section id="about" class="three">
+                <section id="about" class="test">
 						<div class="container">
+                            <iframe id='chat' width="70%" height="500px" src="./chat.html" scrolling="auto"
+                             ></iframe>
+							
                             
-							<ul id="messages"/>
-                            
-                                <center>
+                                
                                 <form id="chatInput" action="">
                                         <div class="col-6 col-12-mobile"><input type="text" id="userInput" /></div>
-                                        <br><div class="col-6"><input type="submit" id="sendButton"  value="보내기"/></div>
-                                    
+                                        <div class="col-6"><input type="submit" id="sendButton"  value="보내기"/></div>
+                                            
                                 </form>
-                            </center>
+                            
 
 
 
